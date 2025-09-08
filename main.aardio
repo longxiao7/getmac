@@ -1,0 +1,41 @@
+import console;
+import inet.mac;
+
+if(_ARGV['h']){
+	console.log(`
+-host : 远程服务器的IP或者域名，默认值 www.163.com
+-port : 远程服务器的端口，默认值 80
+-f :  输出格式，默认值 string , 可以设置 json 输出
+-p : 执行完成后暂停，默认不暂停直接关闭
+-h : 查看帮助信息
+例 : getmac.exe -host=www.baidu.com -port=443 -f=json -p
+`);
+console.pause();
+return ; 
+}
+
+var host = "www.163.com";
+var port = 80;
+var localIp;
+var localMac;
+var f = "string";
+if(_ARGV['host']) host = _ARGV['host'];
+if(_ARGV['port']) port = _ARGV['port']*1;
+
+if(host) {
+	var c = ..wsock.tcp.client();
+	if(  c.connect(host,port : 80) ){
+		localIp = c.getLocalIp()
+	}
+	c.close()
+	localMac = string.match(inet.mac.getAddress(host),"[0-9a-fA-F\-]+");
+}
+
+if(_ARGV['f']=='json'){
+	console.log(`{"ip":"`+localIp+`","MAC":"`+localMac+`"}`);
+}else{
+	console.log("ip="+localIp);
+	console.log("MAC="+localMac);
+}
+
+if(_ARGV['p']) console.pause();
